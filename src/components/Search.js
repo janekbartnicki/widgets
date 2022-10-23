@@ -1,7 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 export default function Search() {
     const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        console.log('Hook fired!');
+    }, [searchTerm]);
 
     const onInputChange = term => {
         setSearchTerm(term);
