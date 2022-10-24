@@ -6,9 +6,8 @@ export default function Search() {
     const [results, setResults] = useState([]);
 
     useEffect(() => {
-        let timer;
-        if(!timer) {
-            timer = setTimeout(() => {if(searchTerm)(async () => {
+        setTimeout(() => {
+            if(searchTerm)(async () => {
                 const {data} = await axios.get('https://en.wikipedia.org/w/api.php', {
                     params: {
                         action: 'query',
@@ -19,8 +18,8 @@ export default function Search() {
                     }
                 });
                 setResults(data.query.search);
-            })()}, 500);
-        } else clearInterval(timer);
+            })()
+        }, 500);
     }, [searchTerm]);
 
     const onInputChange = term => setSearchTerm(term);
