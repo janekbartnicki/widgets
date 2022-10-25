@@ -6,8 +6,11 @@ export default function Search() {
     const [results, setResults] = useState([]);
 
     useEffect(() => {
-        setTimeout(() => {
-            if(searchTerm)(async () => {
+        let timeoutId;
+
+        if(searchTerm && !results.length) {
+
+            (async () => {
                 const {data} = await axios.get('https://en.wikipedia.org/w/api.php', {
                     params: {
                         action: 'query',
@@ -19,8 +22,28 @@ export default function Search() {
                 });
                 setResults(data.query.search);
             })()
-        }, 500);
-    }, [searchTerm]);
+
+        } else {
+
+            timeoutId = setTimeout(() => {
+                (async () => {
+                    const {data} = await axios.get('https://en.wikipedia.org/w/api.php', {
+                        params: {
+                            action: 'query',
+                            list: 'search',
+                            format: 'json',
+                            origin: '*',
+                            srsearch: searchTerm
+                        }
+                    });
+                    setResults(data.query.search);
+                    
+                })()
+            }, 5000);
+        }
+        
+        return () => clearTimeout(timeoutId);
+    }, [searchTerm]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onInputChange = term => setSearchTerm(term);
 
