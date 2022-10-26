@@ -4,46 +4,30 @@ import axios from 'axios';
 export default function Search() {
     const [searchTerm, setSearchTerm] = useState('Programming');
     const [results, setResults] = useState([]);
+    const [debouncedSearchTerm, setDebounceSearchTerm] = useState(searchTerm);
 
     useEffect(() => {
-        let timeoutId;
+        const timeoutId = setTimeout(() => {
+            setDebounceSearchTerm(searchTerm)
+        }, 500);
 
-        if(searchTerm && !results.length) {
-
-            (async () => {
-                const {data} = await axios.get('https://en.wikipedia.org/w/api.php', {
-                    params: {
-                        action: 'query',
-                        list: 'search',
-                        format: 'json',
-                        origin: '*',
-                        srsearch: searchTerm
-                    }
-                });
-                setResults(data.query.search);
-            })()
-
-        } else {
-
-            timeoutId = setTimeout(() => {
-                (async () => {
-                    const {data} = await axios.get('https://en.wikipedia.org/w/api.php', {
-                        params: {
-                            action: 'query',
-                            list: 'search',
-                            format: 'json',
-                            origin: '*',
-                            srsearch: searchTerm
-                        }
-                    });
-                    setResults(data.query.search);
-                    
-                })()
-            }, 5000);
-        }
-        
         return () => clearTimeout(timeoutId);
-    }, [searchTerm]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [searchTerm]);
+
+    useEffect(() => {
+        (async () => {
+            const {data} = await axios.get('https://en.wikipedia.org/w/api.php', {
+                params: {
+                    action: 'query',
+                    list: 'search',
+                    format: 'json',
+                    origin: '*',
+                    srsearch: debouncedSearchTerm
+                }
+            });
+            setResults(data.query.search);
+        })()
+    }, [debouncedSearchTerm])
 
     const onInputChange = term => setSearchTerm(term);
 
