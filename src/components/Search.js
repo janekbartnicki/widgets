@@ -26,7 +26,7 @@ export default function Search() {
                 }
             });
             setResults(data.query.search);
-        })()
+        })();
     }, [debouncedSearchTerm])
 
     const onInputChange = term => setSearchTerm(term);
