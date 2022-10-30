@@ -2,8 +2,11 @@ import React from 'react';
 
 export default function Dropdown({options, label, selected, onSelectedChange}) {
     const renderedOptions = options.map(option => {
+        if(option.value === selected.value) {
+            return null;
+        }
         return (
-            <div key={option.value} onClick={() => onOptionClick(option.value)} className='item'>
+            <div key={option.value} onClick={() => onOptionClick(option)} className='item'>
                 {option.label}
             </div>
         );
@@ -19,10 +22,10 @@ export default function Dropdown({options, label, selected, onSelectedChange}) {
                 <label className='label'>
                     {label}
                 </label>
-                <div className='ui selection dropdown visible active'>
+                <div className='ui selection dropdown'>
                     <i className='dropdown icon'></i>
                     <div className='text'>{selected.label}</div>
-                    <div className='menu visible transition'>
+                    <div className='menu'>
                         {renderedOptions}
                     </div>
                 </div>

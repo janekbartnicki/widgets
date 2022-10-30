@@ -39,7 +39,6 @@ export default function App() {
 
     return (
         <div>
-            {/* <Search/> */}
             <Dropdown selected={selected} onSelectedChange={setSelected} options={options} label='Select a color'/>
         </div>
     )
