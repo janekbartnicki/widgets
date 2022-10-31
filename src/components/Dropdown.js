@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 export default function Dropdown({options, label, selected, onSelectedChange}) {
+    const [isOpen, setIsOpen] = useState(false);
+
     const renderedOptions = options.map(option => {
         if(option.value === selected.value) {
             return null;
@@ -22,10 +24,10 @@ export default function Dropdown({options, label, selected, onSelectedChange}) {
                 <label className='label'>
                     {label}
                 </label>
-                <div className='ui selection dropdown'>
+                <div onClick={() => setIsOpen(!isOpen)} className={`ui selection dropdown ${isOpen ? 'visible active' : ''}`}>
                     <i className='dropdown icon'></i>
                     <div className='text'>{selected.label}</div>
-                    <div className='menu'>
+                    <div className={`menu ${isOpen ? 'visible transition' : ''}`}>
                         {renderedOptions}
                     </div>
                 </div>
