@@ -41,7 +41,7 @@ export default function App() {
 
     return (
         <div>   
-            <Header/>   
+            <Header/>
             <Route path='/'>
                 <Accordion items={items}/>
             </Route>
